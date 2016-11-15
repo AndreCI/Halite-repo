@@ -128,8 +128,10 @@ public class MyBot {
                 }
             }*/
             Site tempSite = gameMap.getSite(currentLocation,targetDirection);
-            if(tempSite.owner!=barbID || tempSite.strength >= currentSite.strength || currentSite.strength<=255-currentSite.production){
+            if(!playersID.contains(tempSite.owner)){
+                if( tempSite.strength >= currentSite.strength && currentSite.strength<=255-currentSite.production) {
                     targetDirection = Direction.STILL;
+                }
             }
             return targetDirection;
         }
@@ -172,7 +174,7 @@ public class MyBot {
         }
         return finalDir;
     }
-
+//TODO : check if 255 str friends are near, if yes, dodge them #SelfDodgeBot
     private static Direction selectDirection(Location currentLocation,Site currentSite){
         Site tempSite;
         Direction targetDirection = Direction.STILL;
@@ -204,10 +206,8 @@ public class MyBot {
                 }
             }
         }
-        if(!barbAround) {
-            if (reinforce(currentSite,currentDistance)) {
+        if(!barbAround && reinforce(currentSite,currentDistance)) {
                 targetDirection = Direction.STILL;
-            }
         }
 
         return targetDirection;
@@ -236,7 +236,7 @@ public class MyBot {
             tempSite = gameMap.getSite(tempLoc,d);
             tempLoc = gameMap.getLocation(tempLoc,d);
         }
-        return i;
+        return i+1;
     }
 
 }
