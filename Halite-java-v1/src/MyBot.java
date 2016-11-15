@@ -99,16 +99,6 @@ public class MyBot {
                         currentDistance = tempDistance;
                     }
 
-                    /*if(totalTerritory<50){
-                        int tempStr = tempSite.strength+tempSite.production+currentSite.strength;
-                        if(tempStr<nextStrength && tempStr<=255 || targetDirection==Direction.STILL) {
-                            targetDirection = d;
-                            nextStrength = tempStr;
-                        }
-                    }else{
-                        targetDirection = Direction.EAST;
-                    }*/
-
                 }
             }
         }
@@ -167,7 +157,9 @@ public class MyBot {
             tempSite = gameMap.getSite(tempLoc,d);
             tempLoc = gameMap.getLocation(tempLoc,d);
         }
-        if(i==)
+        if(i==maxDist){
+            return 256;
+        }
         return i;
     }
 
