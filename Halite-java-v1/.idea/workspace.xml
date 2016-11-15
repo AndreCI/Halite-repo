@@ -24,14 +24,24 @@
       <file leaf-file-name="MyBot.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MyBot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="820">
-              <caret line="133" column="35" selection-start-line="133" selection-start-column="35" selection-end-line="133" selection-end-column="35" />
+            <state relative-caret-position="750">
+              <caret line="82" column="61" selection-start-line="82" selection-start-column="61" selection-end-line="82" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2015#2021#0" expanded="true" />
-                <element signature="e#4187#4188#0" expanded="true" />
-                <element signature="e#4244#4245#0" expanded="true" />
+                <element signature="e#2218#2224#0" expanded="true" />
+                <element signature="e#6182#6183#0" expanded="true" />
+                <element signature="e#6239#6240#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BiTuple.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BiTuple.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="275">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -157,6 +167,7 @@
       <list>
         <option value="$PROJECT_DIR$/../javatest/Halite-Java-Starter-Package/MyBot.java" />
         <option value="$PROJECT_DIR$/src/PlayerState.java" />
+        <option value="$PROJECT_DIR$/src/BiTuple.java" />
         <option value="$PROJECT_DIR$/src/MyBot.java" />
       </list>
     </option>
@@ -563,14 +574,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/InitPackage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/RandomBot.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="50">
@@ -684,9 +687,9 @@
           <caret line="196" column="31" selection-start-line="196" selection-start-column="31" selection-end-line="196" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2015#2021#0" expanded="true" />
-            <element signature="e#4187#4188#0" expanded="true" />
-            <element signature="e#4244#4245#0" expanded="true" />
+            <element signature="e#2218#2224#0" expanded="true" />
+            <element signature="e#6182#6183#0" expanded="true" />
+            <element signature="e#6239#6240#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -759,9 +762,9 @@
           <caret line="85" column="17" selection-start-line="85" selection-start-column="17" selection-end-line="85" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2015#2021#0" expanded="true" />
-            <element signature="e#4187#4188#0" expanded="true" />
-            <element signature="e#4244#4245#0" expanded="true" />
+            <element signature="e#2218#2224#0" expanded="true" />
+            <element signature="e#6182#6183#0" expanded="true" />
+            <element signature="e#6239#6240#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -772,9 +775,9 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2015#2021#0" expanded="true" />
-            <element signature="e#4187#4188#0" expanded="true" />
-            <element signature="e#4244#4245#0" expanded="true" />
+            <element signature="e#2218#2224#0" expanded="true" />
+            <element signature="e#6182#6183#0" expanded="true" />
+            <element signature="e#6239#6240#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -908,9 +911,9 @@
           <caret line="196" column="31" selection-start-line="196" selection-start-column="31" selection-end-line="196" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2015#2021#0" expanded="true" />
-            <element signature="e#4187#4188#0" expanded="true" />
-            <element signature="e#4244#4245#0" expanded="true" />
+            <element signature="e#2218#2224#0" expanded="true" />
+            <element signature="e#6182#6183#0" expanded="true" />
+            <element signature="e#6239#6240#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1002,15 +1005,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/BiTuple.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/MyBot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="820">
-          <caret line="133" column="35" selection-start-line="133" selection-start-column="35" selection-end-line="133" selection-end-column="35" />
+        <state relative-caret-position="750">
+          <caret line="82" column="61" selection-start-line="82" selection-start-column="61" selection-end-line="82" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2015#2021#0" expanded="true" />
-            <element signature="e#4187#4188#0" expanded="true" />
-            <element signature="e#4244#4245#0" expanded="true" />
+            <element signature="e#2218#2224#0" expanded="true" />
+            <element signature="e#6182#6183#0" expanded="true" />
+            <element signature="e#6239#6240#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -15,6 +15,7 @@ public class MyBot {
     public static LinkedList<Integer> playersID;
     public static LinkedList<PlayerState> players;
     public static Mode mode = Mode.FIGHT;
+    public static HashMap<Location,BiTuple<Integer,Direction>> kamikazes;
 
     public enum Mode{
         EXPLORATION, FIGHT;
@@ -23,6 +24,7 @@ public class MyBot {
     public static void main(String[] args) throws java.io.IOException {
         playersID = new LinkedList<>();
         players = new LinkedList<>();
+        kamikazes = new HashMap<>();
         InitPackage iPackage = Networking.getInit();
         myID = iPackage.myID;
         gameMap = iPackage.map;
@@ -48,7 +50,8 @@ public class MyBot {
                 }
             }
         }
-
+        mode = Mode.EXPLORATION;
+        LinkedList<Direction> enemies = new LinkedList<>();
         Networking.sendInit("MyJavaBot");
 
 
@@ -63,19 +66,23 @@ public class MyBot {
                     Location location = new Location(x,y);
                     Site site = gameMap.getSite(location);
                     if(site.owner == myID) {
-
-                        if(mode!=Mode.FIGHT) {
-                            for (Direction d : Direction.CARDINALS) {
-                                Site tempSite = gameMap.getSite(location, d);
-                                if (playersID.contains(tempSite.owner)) {
-                                    mode = Mode.FIGHT;
+                        enemies = spotEnemies(location);
+                            if (!enemies.isEmpty()) {
+                                mode = Mode.FIGHT;
+                                if (site.strength > 175) {
+                                    kamikazes.put(location, new BiTuple<>(10, selectKamikazeDirection(location, site)));
                                 }
                             }
-                        }
+
 
                         if(mode == Mode.FIGHT) {
-                            moves.add(new Move(location, selectAggroDirection(location, site)));
-                        }else{
+                            if (kamikazes.containsKey(location)) {
+                                kamikazes.put(location, new BiTuple<>(kamikazes.get(location).decay - 1, kamikazes.get(location).direction));
+                                moves.add(new Move(location, kamikazes.get(location).direction));
+                            }else {
+                                moves.add(new Move(location, selectAggroDirection(location, site)));
+                            }
+                        } else{
                             moves.add(new Move(location,selectDirection(location,site)));
                         }
                     }
@@ -105,10 +112,49 @@ public class MyBot {
                     }
                 }
             }
+            for(Location l : kamikazes.keySet()){
+                if(gameMap.getSite(l).owner!=myID || kamikazes.get(l).decay<0){
+                    kamikazes.remove(l);
+                }
+            }
 
         }
     }
 
+    private static Direction selectKamikazeDirection(Location location, Site site){
+        LinkedList<Direction> validDir = spotEnemies(location);
+        int bestForce = 5000;
+        int bestProd = 0;
+        int currentForce = 0;
+        int currentProd = 0;
+        if(validDir.isEmpty()){
+            validDir.add(Direction.EAST);
+        }
+        Direction bestDir = validDir.get(0);
+        Site tempSite;
+        Location tempLoc = location;
+        for(Direction d : validDir){
+            currentForce = 0;
+            currentProd = 0;
+            for(int i =0; i<5; i++){
+                tempLoc = gameMap.getLocation(tempLoc,d);
+                tempSite = gameMap.getSite(tempLoc);
+                if(playersID.contains(tempSite.owner)) {
+                    currentForce += tempSite.strength;
+                    currentProd += tempSite.production;
+                }
+            }
+            if(currentForce<=site.strength && bestProd<currentProd){
+                bestForce=currentForce;
+                bestProd=currentProd;
+                bestDir = d;
+            }else if(bestForce==5000 && bestProd>currentProd){
+                bestDir = d;
+            }
+        }
+        return bestDir;
+
+    }
     public static PlayerState getPlayerFromID(int ID){
         return players.get(playersID.indexOf(ID));
     }
