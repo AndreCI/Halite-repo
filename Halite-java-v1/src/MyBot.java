@@ -52,13 +52,73 @@ public class MyBot {
                     totalProduction+=site.production;
                     totalTerritory++;
                     if(site.owner == myID) {
-                        moves.add(new Move(location, selectDirection(location,setupAggression(location))));
+                        AggressionSite as = setupAggression(location,site);
+                        if(as.aggro!=Direction.STILL) {
+                            moves.add(new Move(location, selectAggroDirection(location, as)));
+                        }else{
+                            moves.add(new Move(location,selectDirection(location,site)));
+                        }
                     }
                 }
             }
             Networking.sendFrame(moves);
         }
     }
+
+
+    private static Direction selectDirection(Location currentLocation,Site currentSite){
+        Site tempSite;
+        Site targetSite = gameMap.getSite(currentLocation,Direction.EAST);
+        Direction targetDirection = Direction.STILL;
+        int nextStrength = 255;
+        int maxProd = -1;
+        double currentDistance = 255;
+        boolean advAround = false;
+
+        for(Direction d : Direction.CARDINALS){
+            tempSite = gameMap.getSite(currentLocation,d);
+
+            if(tempSite.owner!=myID){
+                advAround = true;
+                if(tempSite.production>maxProd) {
+                    maxProd = tempSite.production;
+                    if (tempSite.strength < currentSite.strength || currentSite.strength>255-currentSite.production){
+                        targetSite = tempSite;
+                        targetDirection = d;
+
+                    } else {
+                        targetDirection = Direction.STILL;
+                    }
+                }
+            }else{
+                if(!advAround){
+
+                    double tempDistance = getHeuristicDistance(currentLocation, d);
+                    if (tempDistance < currentDistance) {
+                        targetDirection = d;
+                        currentDistance = tempDistance;
+                    }
+
+                    /*if(totalTerritory<50){
+                        int tempStr = tempSite.strength+tempSite.production+currentSite.strength;
+                        if(tempStr<nextStrength && tempStr<=255 || targetDirection==Direction.STILL) {
+                            targetDirection = d;
+                            nextStrength = tempStr;
+                        }
+                    }else{
+                        targetDirection = Direction.EAST;
+                    }*/
+
+                }
+            }
+        }
+        if(currentSite.strength<currentSite.production*5){
+            targetDirection = Direction.STILL;
+        }
+
+        return targetDirection;
+    }
+
 
     private static Direction selectAggroDirection(Location currentLocation, AggressionSite currentSite){
         Site targetSite = gameMap.getSite(currentLocation,currentSite.aggro);
