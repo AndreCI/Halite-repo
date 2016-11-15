@@ -127,6 +127,10 @@ public class MyBot {
                     targetDirection = d;
                 }
             }*/
+            Site tempSite = gameMap.getSite(currentLocation,targetDirection);
+            if(tempSite.owner!=barbID || tempSite.strength >= currentSite.strength || currentSite.strength<=255-currentSite.production){
+                    targetDirection = Direction.STILL;
+            }
             return targetDirection;
         }
     }
