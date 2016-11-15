@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.regex.Matcher;
 
 public class MyBot {
 
@@ -62,57 +60,49 @@ public class MyBot {
         }
     }
 
-    private static Direction selectDirection(Location currentLocation,Site currentSite){
-        Site tempSite;
-        Site targetSite = gameMap.getSite(currentLocation,Direction.EAST);
-        Direction targetDirection = Direction.STILL;
-        int nextStrength = 255;
-        int maxProd = -1;
-        double currentDistance = 255;
-        boolean advAround = false;
-
-        for(Direction d : Direction.CARDINALS){
-            tempSite = gameMap.getSite(currentLocation,d);
-
-            if(tempSite.owner!=myID){
-                advAround = true;
-                if(tempSite.production>maxProd) {
-                    maxProd = tempSite.production;
-                    if (tempSite.strength < currentSite.strength || currentSite.strength>255-currentSite.production){
-                        targetSite = tempSite;
-                        targetDirection = d;
-
-                    } else {
-                        targetDirection = Direction.STILL;
-                    }
-                }
+    private static Direction selectDirection(Location currentLocation, AggressionSite currentSite){
+        Site targetSite = gameMap.getSite(currentLocation,currentSite.aggro);
+        if(targetSite.owner==myID){
+            if(currentSite.strength>currentSite.production*5){
+                return currentSite.aggro;
             }else{
-                if(!advAround){
+                return Direction.STILL
+            }
+        }else if(targetSite.owner==barbID){
+            if (targetSite.strength < currentSite.strength || currentSite.strength>255-currentSite.production){
+                return currentSite.aggro;
+            }else{
+                return Direction.STILL;
+            }
+        }else{
+           return currentSite.aggro;
+        }
+    }
 
-                        double tempDistance = getHeuristicDistance(currentLocation, d);
-                        if (tempDistance < currentDistance) {
-                            targetDirection = d;
-                            currentDistance = tempDistance;
-                        }
-
-                    /*if(totalTerritory<50){
-                        int tempStr = tempSite.strength+tempSite.production+currentSite.strength;
-                        if(tempStr<nextStrength && tempStr<=255 || targetDirection==Direction.STILL) {
-                            targetDirection = d;
-                            nextStrength = tempStr;
-                        }
-                    }else{
-                        targetDirection = Direction.EAST;
-                    }*/
-
-                }
+    private static AggressionSite setupAggression(Location loc){
+        int distance = 256;
+        int tempDistance;
+        Direction aggressionD;
+        for(Direction d : Direction.CARDINALS){
+            tempDistance = getAggressionDistance(loc,d);
+            if(distance>tempDistance){
+                distance = tempDistance;
+                aggressionD = d;
             }
         }
-        if(currentSite.strength<currentSite.production*5){
-            targetDirection = Direction.STILL;
+    }
+    private static int getAggressionDistance(Location l, Direction d){
+        int i = 0;
+        Site tempSite = gameMap.getSite(l,d);
+        Location tempLoc = gameMap.getLocation(l,d);
+        int maxDist = (d==Direction.NORTH || d==Direction.SOUTH) ? gameMap.height : gameMap.width;
+        while(!playersID.contains(tempSite.owner)&& i<maxDist){
+            i++;
+            tempSite = gameMap.getSite(tempLoc,d);
+            tempLoc = gameMap.getLocation(tempLoc,d);
         }
-
-        return targetDirection;
+        if(i==)
+        return i;
     }
 
     private static int getHeuristicDistance(Location l, Direction d){
@@ -128,5 +118,9 @@ public class MyBot {
         return i;
     }
 
+    private static class AggressionSite extends Site{
+        public Direction aggro;
+        public int targetID;
+    }
 
 }
