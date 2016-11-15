@@ -52,7 +52,7 @@ public class MyBot {
                     totalProduction+=site.production;
                     totalTerritory++;
                     if(site.owner == myID) {
-                        moves.add(new Move(location, selectDirection(location,site)));
+                        moves.add(new Move(location, selectDirection(location,setupAggression(location))));
                     }
                 }
             }
@@ -60,13 +60,13 @@ public class MyBot {
         }
     }
 
-    private static Direction selectDirection(Location currentLocation, AggressionSite currentSite){
+    private static Direction selectAggroDirection(Location currentLocation, AggressionSite currentSite){
         Site targetSite = gameMap.getSite(currentLocation,currentSite.aggro);
         if(targetSite.owner==myID){
             if(currentSite.strength>currentSite.production*5){
                 return currentSite.aggro;
             }else{
-                return Direction.STILL
+                return Direction.STILL;
             }
         }else if(targetSite.owner==barbID){
             if (targetSite.strength < currentSite.strength || currentSite.strength>255-currentSite.production){
@@ -79,10 +79,10 @@ public class MyBot {
         }
     }
 
-    private static AggressionSite setupAggression(Location loc){
+    private static AggressionSite setupAggression(Location loc, Site site){
         int distance = 256;
         int tempDistance;
-        Direction aggressionD;
+        Direction aggressionD = Direction.STILL;
         for(Direction d : Direction.CARDINALS){
             tempDistance = getAggressionDistance(loc,d);
             if(distance>tempDistance){
@@ -90,6 +90,12 @@ public class MyBot {
                 aggressionD = d;
             }
         }
+        if(distance==256){
+            aggressionD = Direction.STILL;
+        }
+        AggressionSite as = new AggressionSite(site);
+        as.aggro = aggressionD;
+        return as;
     }
     private static int getAggressionDistance(Location l, Direction d){
         int i = 0;
@@ -121,6 +127,11 @@ public class MyBot {
     private static class AggressionSite extends Site{
         public Direction aggro;
         public int targetID;
+        public AggressionSite(Site site){
+            this.production=site.production;
+            this.owner = site.owner;
+            this.strength = site.strength;
+        }
     }
 
 }
