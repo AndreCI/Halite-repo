@@ -125,7 +125,11 @@ public class MyBot {
                 return Direction.STILL;
             }
         }else{
-           return currentSite.aggro;
+            if(currentSite.strength>targetSite.strength+30) {
+                return currentSite.aggro;
+            }else{
+                return Direction.STILL;
+            }
         }
     }
 
