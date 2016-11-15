@@ -64,10 +64,9 @@ public class MyBot {
 
     private static Direction selectDirection(Location currentLocation,Site currentSite){
         Site tempSite;
-        Site targetSite = gameMap.getSite(currentLocation,Direction.EAST);
         Direction targetDirection = Direction.STILL;
-        int nextStrength = 255;
         int maxProd = -1;
+        int minStrength = 256;
         double currentDistance = 255;
         boolean advAround = false;
 
@@ -76,10 +75,9 @@ public class MyBot {
 
             if(tempSite.owner!=myID){
                 advAround = true;
-                if(tempSite.production>maxProd) {
-                    maxProd = tempSite.production;
+                if(tempSite.strength<minStrength) {
+                    minStrength = tempSite.strength;
                     if (tempSite.strength < currentSite.strength || currentSite.strength>255-currentSite.production){
-                        targetSite = tempSite;
                         targetDirection = d;
 
                     } else {
@@ -94,17 +92,6 @@ public class MyBot {
                             targetDirection = d;
                             currentDistance = tempDistance;
                         }
-
-                    /*if(totalTerritory<50){
-                        int tempStr = tempSite.strength+tempSite.production+currentSite.strength;
-                        if(tempStr<nextStrength && tempStr<=255 || targetDirection==Direction.STILL) {
-                            targetDirection = d;
-                            nextStrength = tempStr;
-                        }
-                    }else{
-                        targetDirection = Direction.EAST;
-                    }*/
-
                 }
             }
         }
