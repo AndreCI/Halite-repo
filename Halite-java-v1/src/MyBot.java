@@ -178,10 +178,10 @@ public class MyBot {
     private static Direction selectDirection(Location currentLocation,Site currentSite){
         Site tempSite;
         Direction targetDirection = Direction.STILL;
+        Direction potentialDiretion = Direction.STILL;
         int minStrength = 256;
         double currentDistance = 255;
         boolean barbAround = false;
-
         for(Direction d : Direction.CARDINALS){
             tempSite = gameMap.getSite(currentLocation,d);
 
@@ -193,6 +193,7 @@ public class MyBot {
                         targetDirection = d;
                     } else {
                         targetDirection = Direction.STILL;
+                        potentialDiretion = d;
                     }
                 }
             }else{
@@ -206,11 +207,77 @@ public class MyBot {
                 }
             }
         }
-        if(!barbAround && reinforce(currentSite,currentDistance)) {
+        if(!barbAround && (reinforce(currentSite,currentDistance))) {
                 targetDirection = Direction.STILL;
+        }if(!barbAround){
+            LinkedList<Direction> validMoves = biggiesNearIntern(currentSite,currentLocation);
+            if(!validMoves.isEmpty()){
+                if(!validMoves.contains(targetDirection)){
+                    targetDirection=validMoves.get(0);
+                }
+            }
+        }else if(targetDirection==Direction.STILL && biggiesNearBorder(currentSite,currentLocation)){
+            targetDirection=potentialDiretion;
         }
 
         return targetDirection;
+    }
+
+    public static boolean biggiesNearBorder(Site currentSite, Location currentLocation){
+        Site tempSite;
+        for(Direction d1 : Direction.CARDINALS){
+            tempSite = gameMap.getSite(currentLocation,d1);
+            if(tempSite.owner==myID && tempSite.strength+currentSite.strength>255){
+                for(Direction d2 : Direction.CARDINALS){
+                    tempSite = gameMap.getSite(gameMap.getLocation(currentLocation,d1),d2);
+                    if(tempSite.owner!=myID){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public static LinkedList<Direction> biggiesNearIntern(Site currentSite, Location currentLocation){
+        LinkedList<Direction> validMoves = new LinkedList<>();
+        validMoves.add(Direction.STILL);
+        Site tempSite;
+        for(Direction d1 : Direction.CARDINALS) {
+            validMoves.add(d1);
+            tempSite = gameMap.getSite(currentLocation,d1);
+            if(tempSite.owner==myID && tempSite.strength>250 && validMoves.contains(Direction.STILL)){
+                validMoves.remove(Direction.STILL);
+            }
+            for (Direction d2 : Direction.CARDINALS) {
+                if (!((d1 == Direction.SOUTH && d2 == Direction.NORTH) || (d1 == Direction.NORTH && d2 == Direction.SOUTH) || (d1 == Direction.EAST && d2 == Direction.WEST) || (d1 == Direction.WEST && d2 == Direction.EAST))) {
+                     tempSite = (gameMap.getSite(gameMap.getLocation(currentLocation,d1),d2));
+                    if(tempSite.owner==myID && tempSite.strength>250 && validMoves.contains(d1)){
+                        validMoves.remove(d1);
+                    }
+                }
+            }
+        }
+        return validMoves;
+
+/*
+                    if(currentSite.strength<150){// && myPlayerState.getTerritory()/totalProductionOnMap <50){
+            for(Direction d1 : Direction.CARDINALS){
+                for(Direction d2 : Direction.CARDINALS) {
+                    if (!((d1 == Direction.SOUTH && d2 == Direction.NORTH) || (d1 == Direction.NORTH && d2 == Direction.SOUTH) || (d1 == Direction.EAST && d2 == Direction.WEST) || (d1 == Direction.WEST && d2 == Direction.EAST))) {
+                        Site tempSite = (gameMap.getSite(gameMap.getLocation(currentLocation,d1),d2));
+                        if(tempSite.owner==myID && tempSite.strength>150){
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }else{
+            return false;
+        }*/
     }
 
     public static boolean reinforce(Site currentSite, double distanceToBorder){
