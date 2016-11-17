@@ -174,7 +174,6 @@ public class MyBot {
         }
         return finalDir;
     }
-//TODO : check if 255 str friends are near, if yes, dodge them #SelfDodgeBot
     private static Direction selectDirection(Location currentLocation,Site currentSite){
         Site tempSite;
         Direction targetDirection = Direction.STILL;
@@ -185,7 +184,7 @@ public class MyBot {
         for(Direction d : Direction.CARDINALS){
             tempSite = gameMap.getSite(currentLocation,d);
 
-            if(tempSite.owner!=myID){
+            if(tempSite.owner!=myID && tempSite.production>0){
                 barbAround = true;
                 if(tempSite.strength<minStrength) {
                     minStrength = tempSite.strength;
@@ -281,12 +280,16 @@ public class MyBot {
     }
 
     public static boolean reinforce(Site currentSite, double distanceToBorder){
-        if(currentSite.strength==0){
-            return true;
-        }else if(distanceToBorder>20){
-            return false;
+        if(frameCounter>(gameMap.width+gameMap.height)/2) {
+            if (currentSite.strength == 0) {
+                return true;
+            } else if (distanceToBorder > 20) {
+                return false;
+            } else {
+                return currentSite.strength < currentSite.production * (20 - distanceToBorder);
+            }
         }else{
-            return currentSite.strength < currentSite.production*(20 - distanceToBorder);
+           return (currentSite.strength<currentSite.production*3);
         }
     }
 
